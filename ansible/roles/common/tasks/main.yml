@@ -20,10 +20,10 @@
 - apt: update_cache=yes
   tags: 
     - build_ami
-- apt: name=openntpd
-  tags: 
+- apt: name=ntp
+  tags:
     - build_ami
-- service: name=openntpd state=started enabled=yes
+- service: name=ntp state=started enabled=yes
 - file: path=/etc/empire/env owner=root group=root mode=0644 state=directory
   tags: 
     - build_ami

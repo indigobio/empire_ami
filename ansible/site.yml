@@ -2,20 +2,27 @@
   connection: local
   vars:
     enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
+    enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC' }}"
+    sumologic_access_id: "{{ lookup('env', 'SUMOLOGIC_ACCESS_ID') }}"
+    sumologic_access_key: "{{ lookup('env', 'SUMOLOGIC_ACCESS_KEY') }}"
   roles:
     - common
     - swap
     - docker
     - aws_ecs
     - { role: logspout, when: enable_streaming_logs == 'true' }
+    - { role: sumologic, when: enable_sumologic == 'true' }
 - hosts: controller
   connection: local
   vars:
     enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
+    sumologic_access_id: "{{ lookup('env', 'SUMOLOGIC_ACCESS__KEY') }}"
+    sumologic_access_key: "{{ lookup('env', 'SUMOLOGIC_ACCESS__KEY') }}"
   roles:
     - common
     - swap
     - docker
+    - aws_ecs
     - empire
 - hosts: empire_ami
   connection: local

@@ -24,8 +24,6 @@ pip install requests
 mv /tmp/packer_files/hosts /etc/ansible/hosts
 chmod +x /etc/ansible/hosts
 
-mv /tmp/packer_files/ansible.conf /etc/init/ansible.conf
-
 mv /tmp/packer_files/make_dockercfg /usr/sbin/make_dockercfg
 chmod +x /usr/sbin/make_dockercfg
 
