@@ -2,6 +2,10 @@
   action: ec2_facts
 - name: Manage /etc/hosts
   template: src=etc/hosts dest=/etc/hosts owner=root group=root mode=0644
+- name: Manage /etc/rsyslog.conf
+  template: src=etc/rsyslog.conf dest=/etc/rsyslog.conf owner=root group=root mode=0644
+  tags:
+    - build_ami
 - apt: update_cache=yes
   tags: 
     - build_ami
