@@ -2,22 +2,28 @@
   connection: local
   vars:
     enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
+    enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
   roles:
     - common
     - swap
     - docker
     - aws_ecs
     - { role: logspout, when: enable_streaming_logs == 'true' }
+    - { role: sumologic, when: enable_sumologic == 'true' }
+    - newrelic
 - hosts: controller
   connection: local
   vars:
     enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
+    enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
   roles:
     - common
     - swap
     - docker
     - aws_ecs
     - empire
+    - newrelic
+    - { role: sumologic, when: enable_sumologic == 'true' }
 - hosts: empire_ami
   connection: local
   roles:
@@ -26,3 +32,4 @@
     - docker
     - aws_ecs
     - empire
+    - newrelic
