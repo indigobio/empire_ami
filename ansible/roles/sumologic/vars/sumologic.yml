@@ -1,2 +1,3 @@
 sumologic_access_id: "{{ lookup('env', 'SUMOLOGIC_ACCESS_ID') }}"
 sumologic_access_key: "{{ lookup('env', 'SUMOLOGIC_ACCESS_KEY') }}"
+sumologic_collector_name: "{{ lookup('env', 'SUMOLOGIC_COLLECTOR_NAME') }}"

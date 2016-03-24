@@ -1,13 +1,27 @@
 - stat: path=/dev/xvdi
   register: dev_xvdi
 
-- name: Make swap
+- name: Make swap on /dev/xvdi
   command: mkswap /dev/xvdi
-  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists
+  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists and not mnt_swap.stat.exists
 
 - mount: name=swap src=/dev/xvdi fstype=swap state=present opts=sw passno=0 dump=0
-  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists
+  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists and not mnt_swap.stat.exists
+
+- name: Make swap on /mnt/swap
+  command: "dd if=/dev/zero of=/mnt/swap bs=1024 count={{ mem2x }}"
+  with_items: ansible_mounts
+  when: item.mount == '/mnt' and {{ item.size_available / 1024 }} > {{ mem2x | int }} and not dev_xvdi.stat.exists
+
+- stat: path=/mnt/swap
+  register: mnt_swap
+
+- command: mkswap /mnt/swap
+  when: ansible_swaptotal_mb < 1 and mnt_swap.stat.exists and not dev_xvdi.stat.exists
+
+- mount: name=swap src=/mnt/swap fstype=swap state=present opts=sw passno=0 dump=0
+  when: ansible_swaptotal_mb < 1 and mnt_swap.stat.exists
 
 - name: Mount swap
   command: "swapon -a"
-  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists
+  when: (ansible_swaptotal_mb < 1 and mnt_swap.stat.exists) or (ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists)
