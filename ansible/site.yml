@@ -3,6 +3,7 @@
   vars:
     enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
     enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
+    mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - common
     - swap
@@ -16,6 +17,7 @@
   vars:
     enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
     enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
+    mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - common
     - swap
