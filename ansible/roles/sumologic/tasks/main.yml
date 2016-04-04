@@ -1,4 +1,4 @@
 - include_vars: sumologic.yml
-- copy: src=etc/sumo-sources.json dest=/etc/sumo-sources.json mode=0640 owner=root group=root
+- template: src=etc/sumo-sources.json dest=/etc/sumo-sources.json mode=0644 owner=root group=root
 - template: src=etc/init/sumologic-collector.conf dest=/etc/init/sumologic-collector.conf mode=0640 owner=root group=root
 - service: name=sumologic-collector state=started
