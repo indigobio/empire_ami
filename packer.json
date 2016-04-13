@@ -11,7 +11,7 @@
       "access_key": "",
       "secret_key": "",
       "region": "us-east-1",
-      "source_ami": "ami-478b262c",
+      "source_ami": "ami-df0607b5",
       "instance_type": "m3.medium",
       "ssh_username": "ubuntu",
       "ssh_timeout": "5m",
