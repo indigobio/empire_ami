@@ -1,6 +1,13 @@
 # Setup the docker filesystem if a device exists
+- stat: path=/dev/xvdc
+  register: dev_xvdc
 - stat: path=/dev/xvdh
   register: dev_xvdh
+- filesystem: fstype=ext4 dev=/dev/xvdc
+  when: dev_xvdc.stat.exists
+  register: new_docker_fs
+  notify:
+    - restart_docker
 - filesystem: fstype=ext4 dev=/dev/xvdh
   when: dev_xvdh.stat.exists
   register: new_docker_fs
@@ -21,8 +28,15 @@
 - shell: /bin/rm -rf /var/lib/docker/*
   ignore_errors: yes
   when: new_docker_fs|changed
+
+- mount: name=/var/lib/docker src=/dev/xvdc fstype=ext4 state=mounted
+  when: new_docker_fs|changed and dev_xvdc.stat.exists
+  register: var_lib_docker
+
 - mount: name=/var/lib/docker src=/dev/xvdh fstype=ext4 state=mounted
-  when: new_docker_fs|changed
+  when: new_docker_fs|changed and dev_xvdh.stat.exists and not var_lib_docker.stat.exists
+  register: var_lib_docker
+
 - file: path=/var/lib/docker/aufs state=absent
   ignore_errors: yes
   when: new_docker_fs|changed

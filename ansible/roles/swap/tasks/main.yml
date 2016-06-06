@@ -1,3 +1,4 @@
+
 - stat: path=/dev/xvdi
   register: dev_xvdi
 
