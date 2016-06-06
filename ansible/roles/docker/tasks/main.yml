@@ -6,7 +6,7 @@
   register: dev_xvdc
 - stat: path=/dev/xvdh
   register: dev_xvdh
-- filesystem: fstype=ext4 dev=/dev/xvdc
+- filesystem: fstype=ext4 dev=/dev/xvdc force=true
   when: dev_xvdc.stat.exists
   register: new_docker_fs
   notify:
