@@ -18,11 +18,11 @@
 
 - name: Make swap on /dev/xvdi
   command: mkswap /dev/xvdi
-  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists and not mnt_swap.stat.exists
+  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists and not mnt_swap|changed
 
 - mount: name=swap src=/dev/xvdi fstype=swap state=present opts=sw passno=0 dump=0
-  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists and not mnt_swap.stat.exists
+  when: ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists and not mnt_swap|changed
 
 - name: Mount swap
   command: "swapon -a"
-  when: (ansible_swaptotal_mb < 1 and mnt_swap.stat.exists) or (ansible_swaptotal_mb < 1 and dev_xvdi.stat.exists)
+  ignore_errors: yes

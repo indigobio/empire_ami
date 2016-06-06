@@ -9,7 +9,6 @@
     - swap
     - docker
     - aws_ecs
-    - { role: logspout, when: enable_streaming_logs == 'true' }
     - { role: sumologic, when: enable_sumologic == 'true' }
     - newrelic
 - hosts: controller
