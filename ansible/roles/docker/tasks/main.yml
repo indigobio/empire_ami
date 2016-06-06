@@ -6,43 +6,37 @@
   register: dev_xvdc
 - stat: path=/dev/xvdh
   register: dev_xvdh
-- filesystem: fstype=ext4 dev=/dev/xvdc force=true
+- filesystem: fstype=ext4 dev=/dev/xvdc opts='-L docker' force=true
   when: dev_xvdc.stat.exists
-  register: new_docker_fs
+  register: docker_fs_xvdc
   notify:
     - restart_docker
-- filesystem: fstype=ext4 dev=/dev/xvdh
+- filesystem: fstype=ext4 dev=/dev/xvdh opts='-L docker'
   when: dev_xvdh.stat.exists
-  register: new_docker_fs
+  register: docker_fs_xvdh
   notify:
     - restart_docker
 
 - service: name=docker state=stopped
-  when: new_docker_fs|changed
+  when: docker_fs_xvdc|changed or docker_fs_xvdh|changed
 # Make absolutely sure aufs doesn't exist or docker freaks
 # https://github.com/docker/docker/issues/14026
 - shell: /bin/umount -t aufs -a -f
   ignore_errors: yes
-  when: new_docker_fs|changed
+  when: docker_fs_xvdc|changed or docker_fs_xvdh|changed
 - shell: /bin/umount -f /var/lib/docker/aufs
   ignore_errors: yes
-  when: new_docker_fs|changed
+  when: docker_fs_xvdc|changed or docker_fs_xvdh|changed
 # Ensure we don't have any left behind images on the old FS
 - shell: /bin/rm -rf /var/lib/docker/*
   ignore_errors: yes
-  when: new_docker_fs|changed
-
-- mount: name=/var/lib/docker src=/dev/xvdc fstype=ext4 state=mounted
-  when: new_docker_fs|changed and dev_xvdc.stat.exists
+  when: docker_fs_xvdc|changed or docker_fs_xvdh|changed
+- mount: name=/var/lib/docker src='LABEL=docker' fstype=ext4 state=mounted
+  when: docker_fs_xvdc|changed or docker_fs_xvdh|changed
   register: var_lib_docker
-
-- mount: name=/var/lib/docker src=/dev/xvdh fstype=ext4 state=mounted
-  when: new_docker_fs|changed and dev_xvdh.stat.exists and not var_lib_docker.stat.exists
-  register: var_lib_docker
-
 - file: path=/var/lib/docker/aufs state=absent
   ignore_errors: yes
-  when: new_docker_fs|changed
+  when: docker_fs_xvdc|changed or docker_fs_xvdh|changed
 
 - copy: src=etc/default/docker dest=/etc/default/docker owner=root group=root mode=0644
   tags:
