@@ -47,3 +47,7 @@
 - pip: name=awscli
   tags:
     - build_ami
+
+- apt: name=htop
+- apt: name=sysstat
+- apt: name=iotop
