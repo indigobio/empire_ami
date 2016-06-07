@@ -11,6 +11,24 @@
       "category": "{{empire_environment}}/docker-logs"
     },
     {
+      "sourceType": "LocalFile",
+      "name": "localfile-var-log-syslog",
+      "pathExpression": "/hostlogs/syslog*",
+      "multilineProcessingEnabled": false,
+      "automaticDateParsing": true,
+      "forceTimeZone": false,
+      "category": "{{empire_environment}}/syslog"
+    },
+    {
+      "sourceType": "LocalFile",
+      "name": "localfile-var-log-authlog",
+      "pathExpression": "/hostlogs/auth.log*",
+      "multilineProcessingEnabled": false,
+      "automaticDateParsing": true,
+      "forceTimeZone": false,
+      "category": "{{empire_environment}}/authlog"
+    },
+    {
       "name": "Docker-stats",
       "category": "{{empire_environment}}/docker-stats",
       "automaticDateParsing": true,
