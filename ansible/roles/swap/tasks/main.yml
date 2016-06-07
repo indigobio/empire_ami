@@ -5,10 +5,14 @@
   register: dev_xvdi
 
 - name: Make swap on /mnt/swap
-  command: "dd if=/dev/zero of=/mnt/swap bs=1024 count={{ mem2x }} && chmod 0600 /mnt/swap"
+  command: "dd if=/dev/zero of=/mnt/swap bs=1024 count={{ mem2x }}"
   with_items: ansible_mounts
   when: item.mount == '/mnt' and {{ item.size_available / 1024 }} > {{ mem2x | int }} and not dev_xvdi.stat.exists and not mnt_swap.stat.exists
   register: mnt_swap
+
+- name: "Make swap secure"
+  command: "chmod 0600 /mnt/swap"
+  when: mnt_swap|changed
 
 - command: mkswap /mnt/swap
   when: mnt_swap|changed
