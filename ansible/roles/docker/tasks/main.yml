@@ -6,6 +6,9 @@
 # Install lvm2
 - apt: name=lvm2
 
+# Install xfsprogs
+- apt: name=xfsprogs
+
 - stat: path=/dev/xvdc
   register: dev_xvdc
   
@@ -44,9 +47,7 @@
   ignore_errors: yes
   when: docker_lvol0|changed
 
-- copy: src=etc/default/docker dest=/etc/default/docker owner=root group=root mode=0644
-  tags:
-    - build_ami
+- template: src=etc/default/docker dest=/etc/default/docker mode=0644 owner=root group=root
   notify:
     - restart_docker
 

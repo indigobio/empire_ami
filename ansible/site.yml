@@ -6,6 +6,7 @@
     mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - common
+    - swap
     - docker
     - aws_ecs
     - { role: sumologic, when: enable_sumologic == 'true' }
@@ -18,6 +19,7 @@
     mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - common
+    - swap
     - docker
     - aws_ecs
     - empire

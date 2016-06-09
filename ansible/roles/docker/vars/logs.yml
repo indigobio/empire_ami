@@ -1,1 +1,2 @@
 empire_log_group: "{{ lookup('env', 'EMPIRE_LOG_GROUP') }}"
+empire_log_region: "{{ lookup('env', 'EMPIRE_LOG_REGION') }}"
