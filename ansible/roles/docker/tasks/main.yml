@@ -38,15 +38,6 @@
   ignore_errors: yes
   when: docker_lvol0|changed
 
-# Ensure we don't have any left behind images on the old FS
-- shell: /bin/rm -rf /var/lib/docker/*
-  ignore_errors: yes
-  when: docker_lvol0|changed
-
-- mount: name=/var/lib/docker src='LABEL=docker' fstype=ext4 state=mounted
-  when: docker_lvol0|changed
-  register: var_lib_docker
-
 - file: path=/var/lib/docker/aufs state=absent
   ignore_errors: yes
   when: docker_lvol0|changed
