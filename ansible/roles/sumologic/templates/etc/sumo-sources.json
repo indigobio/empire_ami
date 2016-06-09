@@ -20,6 +20,15 @@
       "category": "{{empire_environment}}/authlog"
     },
     {
+      "sourceType" : "LocalFile",
+      "name": "localfile-collector-container",
+      "pathExpression": "/logs/containers/*/*json.log",
+      "multilineProcessingEnabled": false,
+      "automaticDateParsing": true,
+      "forceTimeZone": false,
+      "category": "{{empire_environment}}/docker-logs"
+    },
+    {
       "sourceType": "LocalFile",
       "name": "localfile-var-log-docker-maid-=log",
       "pathExpression":  "/hostlogs/docker-maid.log",
