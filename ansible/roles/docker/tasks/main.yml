@@ -12,14 +12,16 @@
 - stat: path=/dev/xvdh
   register: dev_xvdh
 
-- lvol: vg=vg00 pvs=/dev/xvdc size=99%FREE opts='--thinpool docker-thinpool0'
+- lvg:  vg=vg-docker pvs=/dev/xvdc
   when: dev_xvdc.stat.exists and not dev_xvdh.stat.exists
-  register: docker_lvol0
-  notify:
-    - restart_docker
+  register: docker_vg_xvdc
 
-- lvol: vg=vg00 pvs=/dev/xvdh size=99%FREE opts='--thinpool docker-thinpool0'
+- lvg:  vg=vg-docker pvs=/dev/xvdh
   when: dev_xvdh.stat.exists
+  register: docker_vg_xvdh
+
+- shell: lvcreate -l 99%FREE --thinpool vg-docker/docker-thinpool0
+  when: docker_vg_xvdc|changed or docker_vg_xvdh|changed
   register: docker_lvol0
   notify:
     - restart_docker

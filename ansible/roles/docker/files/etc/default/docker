@@ -5,7 +5,7 @@
 
 # Use DOCKER_OPTS to modify the daemon startup options.
 DOCKER_OPTS="$DOCKER_OPTS --storage-driver=devicemapper"
-DOCKER_OPTS="$DOCKER_OTPS --storage-opt dm.thinpooldev=/dev/mapper/vg00-docker--thinpool0"
+DOCKER_OPTS="$DOCKER_OTPS --storage-opt dm.thinpooldev=/dev/mapper/vg--docker-docker--thinpool0"
 DOCKER_OPTS="$DOCKER_OPTS --log-driver=awslogs"
 DOCKER_OTPS="$DOCKER_OPTS --log-opt awslogs-group={{empire_log_group}}"
 
