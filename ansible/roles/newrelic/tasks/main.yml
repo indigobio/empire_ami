@@ -39,6 +39,14 @@
   notify:
     - Restart New Relic
 
+- name: Add the newrelic user to the docker group
+  user:
+    name: newrelic
+    groups: docker
+    append: yes
+  notify:
+    - Restart New Relic
+
 - name: Ensure New Relic Sysmond is started and enabled
   service:
     name: newrelic-sysmond
