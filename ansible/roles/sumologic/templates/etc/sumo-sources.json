@@ -37,25 +37,6 @@
       "specifiedContainers": [],
       "multilineProcessingEnabled": false,
       "sourceType": "DockerLog"
-    },
-    {
-      "name": "Docker-stats",
-      "category": "{{empire_environment}}/docker-stats",
-      "automaticDateParsing": true,
-      "forceTimeZone": false,
-      "cutoffTimestamp": 0,
-      "uri": "unix:///var/run/docker.sock",
-      "specifiedContainers": [],
-      "allContainers": true,
-      "multilineProcessingEnabled": false,
-      "certPath": "",
-      "sourceType": "DockerStats",
-      "filters":[{
-        "filterType":"Include",
-        "name":"StatsRateLimiter",
-        "regexp":"\\{\\\"read\\\"\\s:\\s\\\"\\d{4}-\\d{2}-\\w{5}:\\d{2}:[0][0|1|2].*"
-      }]
     }
   ]
 }
-
