@@ -1,6 +1,6 @@
 - apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
 
-- apt_repository: repo='deb http://download.draios.com/stable/deb stable-$(ARCH)/'
+- apt_repository: repo="deb http://download.draios.com/stable/deb stable-$(ARCH)/"
 
 - apt: name="linux-headers-{{ ansible_kernel }}"
 
