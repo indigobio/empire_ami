@@ -1,11 +1,7 @@
-- apt_key:
-  url: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
+- apt_key: url=https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
 
-- apt_repository:
-  repo: http://download.draios.com/stable/deb stable-amd64
+- apt_repository: repo=http://download.draios.com/stable/deb stable-amd64
 
-- apt:
-  name: "linux-headers-{{ ansible_kernel }}"
+- apt: name="linux-headers-{{ ansible_kernel }}"
 
-- apt:
-  name: sysdig
+- apt: name=sysdig
