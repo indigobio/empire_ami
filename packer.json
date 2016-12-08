@@ -2,7 +2,10 @@
   "variables": {
     "changes": "{{ env `CHANGES` }}",
     "gitinfo": "{{ env `GITINFO` }}",
-    "branch": "{{ env `BRANCH` }}"
+    "branch": "{{ env `BRANCH` }}",
+    "aws_account_id": "{{env `AWS_CUSTOMER_ID` }}",
+    "ami_users": "{{env `AWS_ALTERNATE_IDS` }}",
+    "ami_regions": "{{env `AWS_ALTERNATE_REGIONS` }}"
   },
   "builders": [
     {
@@ -16,12 +19,12 @@
       "ssh_username": "ubuntu",
       "ssh_timeout": "5m",
       "ami_name": "Empire PaaS {{user `branch` | clean_ami_name}} {{isotime | clean_ami_name}}",
-      "ami_regions": ["us-west-1", "us-west-2"],
+      "ami_regions":  "{{ user `ami_regions` }}",
+      "ami_users": "{{ user `ami_users` }},
       "tags": {
         "changes": "{{user `changes`}}",
         "gitinfo": "{{user `gitinfo`}}"
-      },
-      "ami_users": [ "294091367658", "155531623723" ]
+      }
     }
   ],
   "provisioners": [

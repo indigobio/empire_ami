@@ -13,7 +13,7 @@ def main():
 
     # Puts this host in the given HOSTGROUP
     try:
-        host_group = os.environ["EMPIRE_HOSTGROUP"]
+        host_group = os.environ.get("EMPIRE_HOSTGROUP", 'default')
         inventory[host_group] = ["127.0.0.1"]
     except KeyError:
         pass
