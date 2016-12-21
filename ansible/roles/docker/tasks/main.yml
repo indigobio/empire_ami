@@ -99,7 +99,7 @@
     name: "docker-engine={{ docker_version }}~{{ ansible_distribution_release }}"
   tags:
     - build_ami
--
+
 - copy: src=etc/default/docker dest=/etc/default/docker owner=root group=root mode=0644
   notify:
     - restart_docker
