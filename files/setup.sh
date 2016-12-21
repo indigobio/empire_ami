@@ -1,33 +1,30 @@
 #!/bin/sh
-# Initial setup script - gets us ansible 1.7 in trusty
 
-echo "deb http://us-east-1.ec2.archive.ubuntu.com/ubuntu/ trusty-backports main restricted universe multiverse" > /etc/apt/sources.list.d/trusty-backports.list
+ANSIBLE_VERSION=${ANSIBLE_VERSION:-2.2.0.0-1ppa}
 
-cat >>/etc/apt/preferences.d/trusty-backports<<EOF
-Package: *
-Pin: release a=trusty-backports
-Pin-Priority: 100
+sudo -H apt-get -qq update
 
-Package: ansible
-Pin: release a=trusty-backports
-Pin-Priority: 750
-EOF
+# Install python prerequisites
+sudo -H DEBIAN_FRONTEND=noninteractive apt-get -qq install curl python-setuptools python-pip python-lockfile unzip wget software-properties-common
+sudo -H DEBIAN_FRONTEND=noninteractive apt-get -qq install --reinstall ca-certificates
 
-apt-get update
-apt-get install -y ansible python-setuptools patch
+# Install AWS tools
+sudo -H pip install --upgrade pip
+sudo -H pip install --timeout=60 s3cmd
+sudo -H easy_install -q https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
 
-easy_install -U pip
+curl -sL https://s3.amazonaws.com/aws-cli/awscli-bundle.zip -o /tmp/awscli-bundle.zip
+unzip -d /tmp /tmp/awscli-bundle.zip
+sudo -H /tmp/awscli-bundle/install -i /opt/aws -b /usr/local/bin/aws
+rm -rf /tmp/awscli-bundle*
 
-pip install boto
-pip install requests
+# Install ansible
+sudo -H apt-add-repository -y ppa:ansible/ansible
+sudo -H apt-get -qq update
+sudo -H apt-get -qq install ansible=${ANSIBLE_VERSION}~`lsb_release -s -c`
 
 mv /tmp/packer_files/hosts /etc/ansible/hosts
 chmod +x /etc/ansible/hosts
 
-mv /tmp/packer_files/make_dockercfg /usr/sbin/make_dockercfg
-chmod +x /usr/sbin/make_dockercfg
-
 mkdir -p /etc/empire
 mv /tmp/ansible /etc/empire/ansible
-
-/usr/bin/patch /usr/lib/python2.7/dist-packages/ansible/runner/lookup_plugins/first_found.py < /tmp/packer_files/ansible_lookup_plugin_first_found_template.patch

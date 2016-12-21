@@ -1,4 +1,5 @@
 sumologic_access_id: "{{ lookup('env', 'SUMOLOGIC_ACCESS_ID') }}"
 sumologic_access_key: "{{ lookup('env', 'SUMOLOGIC_ACCESS_KEY') }}"
-sumologic_collector_name: "{{ lookup('env', 'SUMOLOGIC_COLLECTOR_NAME') }}"
-empire_environment: "{{ lookup('env', 'EMPIRE_ENVIRONMENT') }}"
+sumologic_version: "{{ lookup('env', 'SUMOLOGIC_VERSION') | default('latest-file', true) }}"
+empire_environment: "{{ lookup('env', 'EMPIRE_ENVIRONMENT') | default('default', true) }}"
+empire_hostgroup: "{{ lookup('env', 'EMPIRE_HOSTGROUP') }}"

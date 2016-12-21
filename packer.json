@@ -11,17 +11,16 @@
     {
       "type": "amazon-ebs",
       "name": "empire-us-east-1",
-      "access_key": "",
-      "secret_key": "",
       "region": "us-east-1",
-      "source_ami": "ami-8e0b9499",
-      "instance_type": "m3.medium",
+      "source_ami": "ami-e6d5d2f1",
+      "instance_type": "c4.large",
       "ssh_username": "ubuntu",
       "ssh_timeout": "5m",
       "ami_name": "Empire PaaS {{user `branch` | clean_ami_name}} {{isotime | clean_ami_name}}",
-      "ami_regions":  "{{ user `ami_regions` }}",
-      "ami_users": "{{ user `ami_users` }},
+      "ami_regions": "{{ user `ami_regions` }}",
+      "ami_users": "{{ user `ami_users` }}",
       "tags": {
+        "Purpose": "empire",
         "changes": "{{user `changes`}}",
         "gitinfo": "{{user `gitinfo`}}"
       }
@@ -47,7 +46,7 @@
     {
       "type": "ansible-local",
       "command": "chmod +x /tmp/packer-provisioner-ansible-local/hosts; EMPIRE_HOSTGROUP=empire_ami sudo -E ansible-playbook --tags build_ami ",
-      "playbook_file": "./ansible/site.yml",
+      "playbook_file": "./ansible/local.yml",
       "inventory_file": "files/hosts",
       "playbook_dir": "./ansible"
     }
