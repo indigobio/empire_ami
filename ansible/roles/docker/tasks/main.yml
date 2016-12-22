@@ -30,6 +30,10 @@
   tags:
     - build_ami
 
+- apt: name=thin-provisioning-tools
+  tags:
+    - build_ami
+
 - apt: name=linux-image-extra-{{ansible_kernel}}
   tags:
     - build_ami
@@ -66,7 +70,6 @@
   when: dev_xvdh.stat.exists
   register: docker_vg_xvdh
 
-# TODO: Reverting back to thin pools, I recall that log storage is a potential landmine.
 - lvol: vg=vg0 lv=pool0-meta size=5%VG
   when: docker_vg_xvdc|changed or docker_vg_xvdh|changed
   register: docker_pool0_tmeta
@@ -82,6 +85,12 @@
 - shell: yes | lvconvert --type thin-pool --poolmetadata vg0/pool0-meta vg0/pool0
   when: docker_pool0_tdata|changed and docker_pool0_tmeta|changed
   register: docker_pool0
+
+- file: path=/etc/lvm/profile state=directory owner=root group=root mode=0755
+
+- copy: src=etc/lvm/profile/docker-thinpool.profile dest=/etc/lvm/profile/docker-thinpool.profile owner=root group=root mode=0644
+
+- shell: lvchange --metadataprofile docker-thinpool vg0/pool0
 
 - filesystem: fstype=ext4 dev=/dev/mapper/vg0-data0 opts='-L docker'
   when: docker_lv_data0|changed
@@ -110,7 +119,7 @@
   tags:
     - build_ami
 
-- copy: src=etc/default/docker dest=/etc/default/docker owner=root group=root mode=0644
+- copy: src=etc/docker/daemon.json dest=/etc/docker/daemon.json owner=root group=root mode=0644
   notify:
     - restart_docker
 
