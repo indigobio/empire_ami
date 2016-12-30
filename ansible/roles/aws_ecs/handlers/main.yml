@@ -1,2 +1,0 @@
-- name: restart_ecs_agent
-  service: name=ecs_agent state=restarted
