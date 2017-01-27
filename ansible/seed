@@ -1,4 +1,4 @@
-ANSIBLE_VERSION=2.2.0.0-1ppa
+ANSIBLE_VERSION=2.2.1.0-1ppa
 DOCKER_EMAIL=default@default.com
 DOCKER_PASS=default
 DOCKER_REGISTRY=https://index.docker.io/v1/
