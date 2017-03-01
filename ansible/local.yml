@@ -25,6 +25,7 @@
     - common
     - swap
     - docker
+    - docker_maid
     - aws_ecs
     - empire
     - newrelic
