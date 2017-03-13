@@ -1,10 +1,8 @@
 - hosts: minion
   connection: local
   vars:
-    docker_version: "{{ lookup('env', 'DOCKER_VERSION') }}"
-    ecs_agent_version: "{{ lookup('env', 'ECS_AGENT_VERSION') }}"
-    enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
     enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
+    enable_datadog: "{{ lookup('env', 'ENABLE_DATADOG') }}"
     mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - common
@@ -12,14 +10,13 @@
     - docker
     - aws_ecs
     - { role: sumologic, when: enable_sumologic == 'true' }
+    - { role: datadog, when: enable_datadog == 'true' }
     - newrelic
 - hosts: controller
   connection: local
   vars:
-    docker_version: "{{ lookup('env', 'DOCKER_VERSION') }}"
-    ecs_agent_version: "{{ lookup('env', 'ECS_AGENT_VERSION') }}"
-    enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
     enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
+    enable_datadog: "{{ lookup('env', 'ENABLE_DATADOG') }}"
     mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - common
@@ -30,13 +27,12 @@
     - empire
     - newrelic
     - { role: sumologic, when: enable_sumologic == 'true' }
+    - { role: datadog, when: enable_datadog == 'true' }
 - hosts: empire_ami
   connection: local
   vars:
-    docker_version: "{{ lookup('env', 'DOCKER_VERSION') }}"
-    ecs_agent_version: "{{ lookup('env', 'ECS_AGENT_VERSION') }}"
-    enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
     enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
+    enable_datadog: "{{ lookup('env', 'ENABLE_DATADOG') }}"
     mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - {role: build_ami, tags: ['build_ami']}
