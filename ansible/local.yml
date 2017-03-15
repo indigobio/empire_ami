@@ -31,8 +31,8 @@
 - hosts: empire_ami
   connection: local
   vars:
-    enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
-    enable_datadog: "{{ lookup('env', 'ENABLE_DATADOG') }}"
+    ecs_agent_version: "{{ lookup('env', 'ECS_AGENT_VERSION') }}"
+    docker_version: "{{ lookup('env', 'DOCKER_VERSION') }}"
     mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - {role: build_ami, tags: ['build_ami']}
