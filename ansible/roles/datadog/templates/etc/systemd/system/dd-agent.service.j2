@@ -1,0 +1,28 @@
+[Unit]
+Description=Datadog Agent
+Documentation=https://hub.docker.com/r/datadog/docker-dd-agent/
+Requires=docker.socket
+After=docker.service
+ 
+[Service]
+Environment=DD_AGENT_VERSION={{ dd_agent_version }}
+Restart=on-failure
+RestartSec=30
+RestartPreventExitStatus=5
+SyslogIdentifier=dd-agent
+ExecStartPre=-/usr/bin/docker kill dd-agent
+ExecStartPre=-/usr/bin/docker rm dd-agent
+ExecStartPre=/usr/bin/docker pull datadog/docker-dd-agent:${DD_AGENT_VERSION}
+ExecStart=/usr/bin/docker run --name dd-agent \
+ --env-file=/etc/datadog/datadog.conf \
+ --volume=/etc/datadog/conf.d:/conf.d:ro \
+ --volume=/var/run/docker.sock:/var/run/docker.sock:ro \
+ --volume=/proc/:/host/proc:ro \
+ --volume=/sys/fs/cgroup:/host/sys/fs/cgroup:ro \
+ datadog/docker-dd-agent:${DD_AGENT_VERSION}
+ 
+ExecStopPost=/usr/bin/docker stop -t 2 dd-agent
+ExecStopPost=/usr/bin/docker rm dd-agent
+ 
+[Install]
+WantedBy = multi-user.target
