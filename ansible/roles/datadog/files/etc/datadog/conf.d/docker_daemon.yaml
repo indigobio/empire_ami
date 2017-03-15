@@ -7,7 +7,7 @@ init_config:
   # Timeout in seconds for the connection to the docker daemon
   # Default: 5 seconds
   #
-  # timeout: 10
+  timeout: 10
  
   # The version of the API the client will use. Specify 'auto' to use the API version provided by the server.
   # api_version: auto
@@ -35,7 +35,7 @@ instances:
     # Create events whenever a container status change.
     # Defaults to true.
     #
-    # collect_events: false
+    collect_events: true
  
     # Collect disk usage per container with docker.container.size_rw and
     # docker.container.size_rootfs metrics.
@@ -43,7 +43,7 @@ instances:
     # ensure that `docker ps -a -q` run fast before enabling it.
     # Defaults to false.
     #
-    collect_container_size: true
+    collect_container_size: false
  
     # Collect images stats
     # Number of available active images and intermediate images as gauges.
