@@ -12,8 +12,8 @@
 
 - name: create /etc/datadog/conf.d/docker_daemon.yaml
   copy:
-    src: etc/datadog/conf.d/docker_daemon.yml
-    dest: /etc/datadog/conf.d/docker_daemon.yml
+    src: etc/datadog/conf.d/docker_daemon.yaml
+    dest: /etc/datadog/conf.d/docker_daemon.yaml
     owner: root
     group: root
     mode : 0755
