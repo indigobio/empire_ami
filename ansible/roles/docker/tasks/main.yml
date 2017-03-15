@@ -26,10 +26,6 @@
   tags:
     - build_ami
 
-- apt: name=xfsprogs
-  tags:
-    - build_ami
-
 - apt: name=thin-provisioning-tools
   tags:
     - build_ami
