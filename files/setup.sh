@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ANSIBLE_VERSION=${ANSIBLE_VERSION:-2.2.0.0-1ppa}
+ANSIBLE_VERSION=${ANSIBLE_VERSION:-2.2.1.0-1ppa}
 
 sudo -H apt-get -qq update
 
