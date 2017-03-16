@@ -2,8 +2,9 @@
   "storage-driver": "devicemapper",
   "storage-opts": [
     "dm.thinpooldev=/dev/mapper/vg0-pool0",
-    "dm.use_deferred_deletion=true",
-    "dm.use_deferred_removal=true"
+    "dm.use_deferred_deletion=false",
+    "dm.use_deferred_removal=false",
+    "dm.fs=ext4"
   ],
   "log-driver": "json-file",
   "log-opts": {
