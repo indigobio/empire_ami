@@ -37,12 +37,6 @@
   when: docker_pool0_tdata|changed and docker_pool0_tmeta|changed
   register: docker_pool0
 
-#- file: path=/etc/lvm/profile state=directory owner=root group=root mode=0755
-
-#- copy: src=etc/lvm/profile/docker-thinpool.profile dest=/etc/lvm/profile/docker-thinpool.profile owner=root group=root mode=0644
-
-#- shell: lvchange --metadataprofile docker-thinpool vg-docker/pool0
-
 - filesystem: fstype=ext4 dev=/dev/mapper/vg--docker-data0 opts='-L docker'
   when: docker_lv_data0|changed
   register: docker_fs_data0
