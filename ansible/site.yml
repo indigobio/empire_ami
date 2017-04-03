@@ -3,6 +3,7 @@
   vars:
     enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
     enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
+    enable_datadog: "{{ lookup('env', 'ENABLE_DATADOG') }}"
     mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - common
@@ -10,21 +11,24 @@
     - docker
     - aws_ecs
     - { role: sumologic, when: enable_sumologic == 'true' }
+    - { role: datadog, when: enable_datadog == 'true' }
     - newrelic
 - hosts: controller
   connection: local
   vars:
     enable_streaming_logs: "{{ lookup('env', 'ENABLE_STREAMING_LOGS') }}"
     enable_sumologic: "{{ lookup('env', 'ENABLE_SUMOLOGIC') }}"
+    enable_datadog: "{{ lookup('env', 'ENABLE_DATADOG') }}"
     mem2x: "{{ ansible_memtotal_mb * 1024 * 2 }}"
   roles:
     - common
     - swap
     - docker
     - aws_ecs
+    - { role: sumologic, when: enable_sumologic == 'true' }
+    - { role: datadog, when: enable_datadog == 'true' }
     - empire
     - newrelic
-    - { role: sumologic, when: enable_sumologic == 'true' }
 - hosts: empire_ami
   connection: local
   roles:
