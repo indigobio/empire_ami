@@ -4,12 +4,12 @@
 # Install lvm2
 - apt: name=lvm2
 
-# Install xfsprogs
-- apt: name=xfsprogs
+- apt: name=thin-provisioning-tools
+  tags: build_ami
 
 - stat: path=/dev/xvdc
   register: dev_xvdc
-  
+
 - stat: path=/dev/xvdh
   register: dev_xvdh
 
@@ -21,29 +21,46 @@
   when: dev_xvdh.stat.exists
   register: docker_vg_xvdh
 
-- shell: lvcreate -l 99%FREE --thinpool vg-docker/docker-thinpool0
+- lvol: vg=vg-docker lv=pool0-meta size=5%VG
   when: docker_vg_xvdc|changed or docker_vg_xvdh|changed
-  register: docker_lvol0
-  notify:
-    - restart_docker
+  register: docker_pool0_tmeta
+
+- lvol: vg=vg-docker lv=pool0 size=85%VG
+  when: docker_vg_xvdc|changed or docker_vg_xvdh|changed
+  register: docker_pool0_tdata
+
+- lvol: vg=vg-docker lv=data0 size=5%VG
+  when: docker_vg_xvdc|changed or docker_vg_xvdh|changed
+  register: docker_lv_data0
+
+- shell: yes | lvconvert --thinpool vg-docker/pool0 --poolmetadata vg-docker/pool0-meta
+  when: docker_pool0_tdata|changed and docker_pool0_tmeta|changed
+  register: docker_pool0
+
+- filesystem: fstype=ext4 dev=/dev/mapper/vg--docker-data0 opts='-L docker'
+  when: docker_lv_data0|changed
+  register: docker_fs_data0
 
 - service: name=docker state=stopped
-  when: docker_lvol0|changed
+  when: docker_pool0|changed
   
 # Make absolutely sure aufs doesn't exist or docker freaks
 # https://github.com/docker/docker/issues/14026
 
 - shell: /bin/umount -t aufs -a -f
   ignore_errors: yes
-  when: docker_lvol0|changed
+  when: docker_fs_data0|changed
 
 - shell: /bin/umount -f /var/lib/docker/aufs
   ignore_errors: yes
-  when: docker_lvol0|changed
+  when: docker_fs_data0|changed
 
-- file: path=/var/lib/docker/aufs state=absent
+- file: path=/var/lib/docker state=absent
   ignore_errors: yes
-  when: docker_lvol0|changed
+  when: docker_fs_data0|changed
+
+- mount: name=/var/lib/docker src='LABEL=docker' fstype=ext4 state=mounted
+  when: docker_fs_data0|changed
 
 - copy: src=etc/default/docker dest=/etc/default/docker owner=root group=root mode=0644
   notify:
