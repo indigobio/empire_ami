@@ -1,0 +1,29 @@
+- include_vars: datadog.yml
+
+- file: name=/etc/datadog/conf.d mode=0755 owner=root group=root state=directory
+
+- name: create /etc/datadog/datadog.conf
+  template:
+    src: etc/datadog/datadog.conf.j2
+    dest: /etc/datadog/datadog.conf
+    owner: root
+    group: root
+    mode: 0755
+
+- name: create /etc/datadog/conf.d/docker_daemon.yaml
+  copy:
+    src: etc/datadog/conf.d/docker_daemon.yaml
+    dest: /etc/datadog/conf.d/docker_daemon.yaml
+    owner: root
+    group: root
+    mode : 0755
+
+- name: create /etc/init/dd-agent.conf
+  template:
+    src: etc/init/dd-agent.conf.j2
+    dest: /etc/init/dd-agent.conf
+    owner: root
+    group: root
+    mode: 0755
+
+- service: name=dd-agent state=started

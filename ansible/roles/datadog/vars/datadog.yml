@@ -1,0 +1,2 @@
+dd_agent_version: "{{ lookup('env', 'DD_AGENT_VERSION') }}"
+dd_api_key: "{{ lookup('env', 'DD_API_KEY') }}"
