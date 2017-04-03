@@ -34,7 +34,7 @@
   register: docker_lv_data0
 
 - shell: yes | lvconvert --type thin-pool --poolmetadata vg-docker/pool0-meta vg-docker/pool0
-  when: docker_pool0_tdata|changed or docker_pool0_data|changed
+  when: docker_pool0_tdata|changed and docker_pool0_tmeta|changed
   register: docker_pool0
 
 - file: path=/etc/lvm/profile state=directory owner=root group=root mode=0755
