@@ -10,7 +10,6 @@
     - docker
     - aws_ecs
     - { role: sumologic, when: enable_sumologic == 'true' }
-    - sysdig
     - newrelic
 - hosts: controller
   connection: local
@@ -24,7 +23,6 @@
     - docker
     - aws_ecs
     - empire
-    - sysdig
     - newrelic
     - { role: sumologic, when: enable_sumologic == 'true' }
 - hosts: empire_ami
@@ -35,5 +33,4 @@
     - docker
     - aws_ecs
     - empire
-    - sysdig
     - newrelic
