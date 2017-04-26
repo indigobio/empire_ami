@@ -11,5 +11,5 @@
     "max-size": "10m",
     "max-file": "10"
   },
-  "icc": true
+  "icc": false
 }
