@@ -4,7 +4,7 @@
   tags:
     - build_ami
 
-- apt_repository: repo='deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} stable' state=present
+- apt_repository: repo='deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ansible_distribution_release}} edge' state=present
   tags:
     - build_ami
 
