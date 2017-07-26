@@ -12,7 +12,7 @@
       "type": "amazon-ebs",
       "name": "empire-us-east-1",
       "region": "us-east-1",
-      "source_ami": "ami-80861296",
+      "source_ami": "ami-cd0f5cb6",
       "instance_type": "c4.large",
       "ssh_username": "ubuntu",
       "ssh_timeout": "5m",
