@@ -121,3 +121,4 @@ instances:
     # Default to None
     # Example:
     # collect_labels_as_tags: ["com.docker.compose.service", "com.docker.compose.project"]
+    collect_labels_as_tags: ["empire.app.name", "empire.app.release", "empire.app.id", "empire.app.process"]
