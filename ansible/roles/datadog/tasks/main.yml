@@ -11,8 +11,8 @@
     mode: 0755
 
 - name: create /etc/datadog/conf.d/docker_daemon.yaml
-  copy:
-    src: etc/datadog/conf.d/docker_daemon.yaml
+  template:
+    src: etc/datadog/conf.d/docker_daemon.yaml.j2
     dest: /etc/datadog/conf.d/docker_daemon.yaml
     owner: root
     group: root
